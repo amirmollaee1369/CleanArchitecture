@@ -16,10 +16,10 @@ namespace CleanArch.Host.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<PersonViewModel> Get()
+        public List<PersonViewModel> Get()
         {
             var people = _personService.Read();
-            return people;
+            return people.ToList();
         }
 
         [HttpGet("{id}")]

@@ -1,0 +1,109 @@
+<form #personForm="ngForm">
+
+    <div class="p-2">
+        <mat-form-field
+            appearance="outline"
+            class="w-100"
+        >
+            <mat-label>FirstName</mat-label>
+            <input
+                matInput
+                placeholder="FirstName"
+                name="FirstName"
+                [(ngModel)]="model.FirstName"
+                required
+            >
+        </mat-form-field>
+    </div>
+    
+    <div class="p-2">
+      <mat-form-field
+          appearance="outline"
+          class="w-100"
+      >
+          <mat-label>LastName</mat-label>
+          <input
+              matInput
+              placeholder="LastName"
+              name="LastName"
+              [(ngModel)]="model.LastName"
+              required
+          >
+      </mat-form-field>
+  </div>
+  
+  <div class="p-2">
+    <mat-form-field
+        appearance="outline"
+        class="w-100"
+    >
+        <mat-label>Email</mat-label>
+        <input
+            matInput
+            placeholder="Email"
+            name="Email"
+            [(ngModel)]="model.Email"
+            required
+        >
+    </mat-form-field>
+</div>
+
+<div class="p-2">
+  <mat-form-field
+      appearance="outline"
+      class="w-100"
+  >
+      <mat-label>DateofBirth</mat-label>
+      <input
+          matInput
+          placeholder="DateofBirth"
+          name="DateofBirth"
+          [(ngModel)]="model.DateofBirth"
+          required
+      >
+  </mat-form-field>
+</div>
+
+<div class="p-2">
+  <mat-form-field
+      appearance="outline"
+      class="w-100"
+  >
+      <mat-label>PhoneNumber</mat-label>
+      <input
+          matInput
+          placeholder="PhoneNumber"
+          name="PhoneNumber"
+          [(ngModel)]="model.PhoneNumber"
+          required
+      >
+  </mat-form-field>
+</div>
+
+<div class="p-2">
+  <mat-form-field
+      appearance="outline"
+      class="w-100"
+  >
+      <mat-label>RegDate</mat-label>
+      <input
+          matInput
+          placeholder="RegDate"
+          name="RegDate"
+          [(ngModel)]="model.RegDate"
+          required
+      >
+  </mat-form-field>
+</div>
+
+    <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="personForm.form.invalid"
+        (click)="save()"
+    >
+        ذخیره
+    </button>
+
+</form>
