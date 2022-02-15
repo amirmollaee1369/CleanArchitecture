@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyMaterialModule } from './material.module';
 import { PresonModule } from './preson/preson.module';
+import { FrameworkModule } from './framework/framework.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { PresonModule } from './preson/preson.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     MyMaterialModule,
-    PresonModule
+    PresonModule,
+    FrameworkModule
   ],
   providers: [],
   bootstrap: [AppComponent]
