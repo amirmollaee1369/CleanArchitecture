@@ -16,10 +16,10 @@ namespace CleanArch.Infra.IOC
         public static void RegisterDependency(IServiceCollection service)
         {            
             //Application Layer
-            service.AddScoped<IPersonService, PersonService>();
+            service.AddTransient<IPersonService, PersonService>();
 
             //Infra Data Layer
-            service.AddScoped<IPersonRepository, PersonRepository>();
+            service.AddTransient<IPersonRepository, PersonRepository>();
         }
     }
 }

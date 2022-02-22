@@ -1,4 +1,5 @@
 using CleanArch.Infra.Data.Context;
+using CleanArch.Infra.Data.SeedData;
 using CleanArch.Infra.IOC;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CleanArchDBContext>(op => op.UseSqlServer(builder.Configuration.GetConnectionString("CleanArchDBConnection")));
 DependencyContainer.RegisterDependency(builder.Services);
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.Initialize(services);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

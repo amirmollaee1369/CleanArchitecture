@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,12 +9,21 @@ namespace CleanArch.Application.Contract.ViewModels
 {
     public class PersonViewModel
     {
+        [Key]
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
+        [Required]
+        public string FirstName { get; set; } = string.Empty;
+        [Required]
+        public string LastName { get; set; } = string.Empty;
+        [DataType(DataType.EmailAddress)]
+        [Required]
+        public string Email { get; set; } = string.Empty;
+        [DataType(DataType.Date)]
+        [Required]
         public DateTime DateofBirth { get; set; }
-        public string PhoneNumber { get; set; }
-        public DateTime RegDate { get; set; } = DateTime.Now;
+        [DataType(DataType.PhoneNumber)]
+        [Required]
+        public string PhoneNumber { get; set; } = string.Empty;
+        
     }
 }

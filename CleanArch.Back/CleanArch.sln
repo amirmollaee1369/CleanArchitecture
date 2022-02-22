@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArch.Infra.IOC", "Clea
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CleanArch.Host", "CleanArch.Host", "{209F7441-FCB3-4009-972E-5D58E9F7DD5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArch.Host", "CleanArch.Host\CleanArch.Host.csproj", "{EE0048E1-F489-41C9-BE43-19D3C3A6EA57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArch.Host", "CleanArch.Host\CleanArch.Host.csproj", "{EE0048E1-F489-41C9-BE43-19D3C3A6EA57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
