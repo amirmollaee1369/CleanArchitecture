@@ -1,45 +1,42 @@
 ﻿using CleanArch.Application.Contract.IService;
 using CleanArch.Application.Contract.ViewModels;
 using CleanArch.Application.Mapper;
-using CleanArch.Domain.IRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CleanArch.Domain.IUnitOfWork;
+using CleanArch.Infra.Data.UnitOfWork;
 
 namespace CleanArch.Application.Service
 {
     public class PersonService : IPersonService
     {
-        public IPersonRepository _personRepository;
-        public PersonService(IPersonRepository personRepository)
+        private IUnitOfWork _unitOfWork;
+
+        public PersonService(IUnitOfWork unitOfWork)
         {
-            _personRepository = personRepository;
+            _unitOfWork=unitOfWork;
         }
 
         public void Create(PersonViewModel personVM)
         {
-            _personRepository.Create(PersonMapper.PersonViewModelToPerson(personVM));
+            _unitOfWork.PersonRepository.Insert(PersonMapper.PersonViewModelToPerson(personVM));
         }
 
         public void Delete(PersonViewModel personVM)
         {
-            _personRepository.Delete(PersonMapper.PersonViewModelToPerson(personVM));
+            _unitOfWork.PersonRepository.Delete(PersonMapper.PersonViewModelToPerson(personVM));
         }
 
         public IEnumerable<PersonViewModel> Read()
         {
-            return _personRepository.Read().Select(PersonMapper.PersonToPersonViewModel).ToList();
+            return _unitOfWork.PersonRepository.Get().Select(PersonMapper.PersonToPersonViewModel).ToList();
         }
         public PersonViewModel ReadById(int id)
         {
-            return PersonMapper.PersonToPersonViewModel(_personRepository.ReadById(id));
+            return PersonMapper.PersonToPersonViewModel(_unitOfWork.PersonRepository.GetByID(id));
         }
 
         public void Update(PersonViewModel personVM)
         {
-            _personRepository.Update(PersonMapper.PersonViewModelToPerson(personVM));
+            _unitOfWork.PersonRepository.Update(PersonMapper.PersonViewModelToPerson(personVM));
         }
     }
 }

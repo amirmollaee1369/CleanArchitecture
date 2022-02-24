@@ -8,8 +8,6 @@
 
 	<ItemGroup>
 		<Folder Include="Exception\" />
-		<Folder Include="IRepository\" />
-		<Folder Include="Model\" />
 	</ItemGroup>
 
 </Project>

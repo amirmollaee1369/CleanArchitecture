@@ -31,7 +31,7 @@ namespace CleanArch.Infra.Data.SeedData
 
                 context.AddRange(new Person()
                 {
-                    Id=1,
+                    //Id=1,
                     FirstName="Amir",
                     LastName="Mollaee",
                     DateofBirth=DateTime.Now,

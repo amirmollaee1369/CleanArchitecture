@@ -16,6 +16,7 @@ builder.Services.AddControllers().AddJsonOptions(container=>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CleanArchDBContext>(op => op.UseSqlServer(builder.Configuration.GetConnectionString("CleanArchDBConnection")));
+
 DependencyContainer.RegisterDependency(builder.Services);
 var app = builder.Build();
 

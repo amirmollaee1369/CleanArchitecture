@@ -12,6 +12,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CleanArch.Application.Contract\CleanArch.Application.Contract.csproj" />
+		<ProjectReference Include="..\CleanArch.Infra.Data\CleanArch.Infra.Data.csproj" />
 	</ItemGroup>
 
 </Project>
