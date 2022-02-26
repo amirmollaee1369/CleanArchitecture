@@ -1,7 +1,6 @@
 ﻿using CleanArch.Application.Contract.IService;
 using CleanArch.Application.Contract.ViewModels;
 using CleanArch.Application.Mapper;
-using CleanArch.Domain.IUnitOfWork;
 using CleanArch.Infra.Data.UnitOfWork;
 
 namespace CleanArch.Application.Service

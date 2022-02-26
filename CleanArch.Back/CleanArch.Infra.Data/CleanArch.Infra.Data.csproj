@@ -8,7 +8,7 @@
 
 	<ItemGroup>
 		<Folder Include="Mapping\" />
-		<Folder Include="Context\" />
+		<Folder Include="Repository\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -26,6 +26,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CleanArch.Domain\CleanArch.Domain.csproj" />
+		<ProjectReference Include="..\Framework.Core\Framework.Core.csproj" />
 	</ItemGroup>
 
 </Project>

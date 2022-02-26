@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArch.Domain.IRepository
+namespace CleanArch.Framework.Core.IGenericRepository
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {

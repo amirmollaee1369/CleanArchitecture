@@ -1,8 +1,8 @@
 ﻿
+using CleanArch.Framework.Core.IGenericRepository;
 using CleanArch.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using CleanArch.Domain.IRepository;
 
 namespace CleanArch.Infra.Data.Repository
 {

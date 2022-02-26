@@ -1,6 +1,5 @@
 ﻿using CleanArch.Application.Contract.IService;
 using CleanArch.Application.Contract.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArch.Host.Controllers
