@@ -31,13 +31,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArch.Host", "CleanArch
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Framework", "_Framework", "{70F57CFD-842C-4229-BC5A-0D86B6DA1272}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Core", "Framework.Core\Framework.Core.csproj", "{F52687A5-0950-42C6-8070-CB2EAF457C88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Core", "Framework.Core\Framework.Core.csproj", "{F52687A5-0950-42C6-8070-CB2EAF457C88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Domain", "Framework.Domain\Framework.Domain.csproj", "{B3C94F84-0623-4C12-A7EC-28AF2744F0AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Domain", "Framework.Domain\Framework.Domain.csproj", "{B3C94F84-0623-4C12-A7EC-28AF2744F0AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.EF", "Framework.EF\Framework.EF.csproj", "{ABF76E0A-76B2-4B94-8736-2C40ABEC9CD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.EF", "Framework.EF\Framework.EF.csproj", "{ABF76E0A-76B2-4B94-8736-2C40ABEC9CD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Email", "Framework.Email\Framework.Email.csproj", "{0CE0A122-CF15-4680-BC2F-5C9AD06C9396}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Email", "Framework.Email\Framework.Email.csproj", "{0CE0A122-CF15-4680-BC2F-5C9AD06C9396}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

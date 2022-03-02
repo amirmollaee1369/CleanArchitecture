@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanArch.Domain.Model
 {
-    public class Person
+    public class Person : Base
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         public string FirstName { get; set; } = string.Empty;
         [Required]
@@ -16,14 +15,15 @@ namespace CleanArch.Domain.Model
         [DataType(DataType.Password)]
         [Required]
         public string Password { get; set; } = string.Empty;
-        [DataType(DataType.Date)]
-        [Required]
-        public DateTime DateofBirth { get; set; }
         [DataType(DataType.PhoneNumber)]
         [Required]
         public string PhoneNumber { get; set; } = string.Empty;
         [DataType(DataType.DateTime)]
         [Required]
         public DateTime RegDate { get; set; } = DateTime.Now;
+        public string Permissions { get; set; }
+
+        //Navigation Property
+        public List<PersonRole> PersonRoles { get; set; }
     }
 }

@@ -13,8 +13,9 @@ namespace CleanArch.Application.Mapper
                 Email = person.Email,
                 FirstName = person.FirstName,
                 LastName = person.LastName,
-                DateofBirth = person.DateofBirth,
-                PhoneNumber = person.PhoneNumber
+                PhoneNumber = person.PhoneNumber,
+                Permissions=person.Permissions,
+                //PersonRoles=person.PersonRoles
             };
         }
 
@@ -26,8 +27,9 @@ namespace CleanArch.Application.Mapper
                 Email = personVM.Email,
                 FirstName = personVM.FirstName,
                 LastName = personVM.LastName,
-                DateofBirth = personVM.DateofBirth,
                 PhoneNumber = personVM.PhoneNumber,
+                Permissions=personVM.Permissions,
+                //PersonRoles=personVM.PersonRoles
             };
         }
     }

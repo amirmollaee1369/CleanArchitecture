@@ -1,4 +1,5 @@
 ﻿using CleanArch.Domain.Model;
+using CleanArch.Framework.Auth.Permissions;
 using CleanArch.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,34 +15,79 @@ namespace CleanArch.Infra.Data.SeedData
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using (var context=new CleanArchDBContext(serviceProvider.GetRequiredService<
+            using (var context = new CleanArchDBContext(serviceProvider.GetRequiredService<
                     DbContextOptions<CleanArchDBContext>>()))
             {
-                #region People Seed Data
-                if (context == null || context.People == null)
+                
+                if (context == null)
                 {
                     throw new ArgumentNullException("Null CleanArchDBContext");
                 }
 
-                // Look for any movies.
-                if (context.People.Any())
+                #region People Seed Data
+                if (context.People == null)
                 {
-                    return;   // DB has been seeded
+                    throw new ArgumentNullException("Null CleanArchDBContext");
                 }
-
-                context.AddRange(new Person()
+                else
                 {
-                    //Id=1,
-                    FirstName="Amir",
-                    LastName="Mollaee",
-                    DateofBirth=DateTime.Now,
-                    Email="amir.mollaee1369@gmail.com",
-                    PhoneNumber="09154308951",
-                    RegDate=DateTime.Now
-                });
-                context.SaveChanges();
+                    if (!context.People.Any())
+                    {
+
+                        context.AddRange(new Person()
+                        {
+                            //Id=1,
+                            FirstName="Amir",
+                            LastName="Mollaee",
+                            Email="amir.mollaee1369@gmail.com",
+                            PhoneNumber="09154308951",
+                            Password="123",
+                            RegDate=DateTime.Now,
+                            Permissions=String.Join(",", new string[] { Permissions.Person.Read })
+                        }, new Person()
+                        {
+                            //Id=1,
+                            FirstName="Ahmad",
+                            LastName="MohamadAbadi",
+                            Email="ahmad.mohamadabadi@gmail.com",
+                            PhoneNumber="09151111111",
+                            Password="123",
+                            RegDate=DateTime.Now,
+                            Permissions=String.Join(",", new string[] { Permissions.Person.Read })
+                        });
+                        context.SaveChanges();
+                    }
+                }
                 #endregion
 
+                #region Roles Seed Data
+                if (context.Roles == null)
+                {
+                    throw new ArgumentNullException("Null CleanArchDBContext");
+                }
+                else
+                {
+                    if (!context.Roles.Any())
+                    {
+
+                        context.AddRange(new Role()
+                        {
+                            //Id=1,
+                            Name="Admin",
+                            Permissions=String.Join(",", new string[] { Permissions.Person.Create, Permissions.Person.Delete, Permissions.Person.Read, Permissions.Person.Update })
+                        },
+                        new Role()
+                        {
+                            //Id=1,
+                            Name="Person",
+                            Permissions=String.Join(",", new string[] {  Permissions.Person.Update})
+                        });
+                        context.SaveChanges();
+                    }
+                }
+                #endregion
+
+               
             }
         }
     }

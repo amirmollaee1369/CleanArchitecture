@@ -7,13 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Constant\" />
-		<Folder Include="IService\" />
-		<Folder Include="ViewModels\" />
+		<ProjectReference Include="..\CleanArch.Domain\CleanArch.Domain.csproj" />
+		<ProjectReference Include="..\Framework.Core\Framework.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\CleanArch.Domain\CleanArch.Domain.csproj" />
+	  <Folder Include="Constant\" />
 	</ItemGroup>
 
 </Project>

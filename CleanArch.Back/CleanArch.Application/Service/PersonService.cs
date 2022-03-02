@@ -2,6 +2,7 @@
 using CleanArch.Application.Contract.ViewModels;
 using CleanArch.Application.Mapper;
 using CleanArch.Infra.Data.UnitOfWork;
+using System.Linq.Expressions;
 
 namespace CleanArch.Application.Service
 {
@@ -28,6 +29,7 @@ namespace CleanArch.Application.Service
         {
             return _unitOfWork.PersonRepository.Get().Select(PersonMapper.PersonToPersonViewModel).ToList();
         }
+
         public PersonViewModel ReadById(int id)
         {
             return PersonMapper.PersonToPersonViewModel(_unitOfWork.PersonRepository.GetByID(id));

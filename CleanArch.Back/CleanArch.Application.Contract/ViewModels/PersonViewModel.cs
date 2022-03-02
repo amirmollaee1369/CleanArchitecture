@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CleanArch.Domain.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace CleanArch.Application.Contract.ViewModels
 {
-    public class PersonViewModel
+    public class PersonViewModel : BaseViewModel
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         public string FirstName { get; set; } = string.Empty;
         [Required]
@@ -18,12 +17,20 @@ namespace CleanArch.Application.Contract.ViewModels
         [DataType(DataType.EmailAddress)]
         [Required]
         public string Email { get; set; } = string.Empty;
-        [DataType(DataType.Date)]
+        [DataType(DataType.Password)]
         [Required]
-        public DateTime DateofBirth { get; set; }
+        public string Password { get; set; } = string.Empty;
         [DataType(DataType.PhoneNumber)]
         [Required]
         public string PhoneNumber { get; set; } = string.Empty;
-        
+        [DataType(DataType.DateTime)]
+        [Required]
+        public DateTime RegDate { get; set; } = DateTime.Now;
+
+        public string Token { get; set; } = string.Empty;
+        public string Permissions { get; set; }
+
+        //Navigation Property
+        public List<PersonRole> PersonRoles { get; set; }
     }
 }

@@ -8,14 +8,16 @@ namespace CleanArch.Infra.Data.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private CleanArchDBContext _context;
-        private IGenericRepository<Person> ?personRepository;
-
 
         public UnitOfWork(CleanArchDBContext context)
         {
             _context=context;
         }
 
+        #region IGenericRepository
+        
+        #region Person
+        private IGenericRepository<Person>? personRepository;
         public IGenericRepository<Person> PersonRepository
         {
             get
@@ -27,6 +29,24 @@ namespace CleanArch.Infra.Data.UnitOfWork
                 return personRepository;
             }
         }
+        #endregion
+
+        #region Role
+        private IGenericRepository<Role>? roleRepository;
+        public IGenericRepository<Role> RoleRepository
+        {
+            get
+            {
+                if (this.roleRepository == null)
+                {
+                    this.roleRepository = new GenericRepository<Role>(_context);
+                }
+                return roleRepository;
+            }
+        }
+        #endregion
+        
+        #endregion
 
         public void Save()
         {

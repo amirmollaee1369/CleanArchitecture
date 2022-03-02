@@ -24,6 +24,7 @@
     <ProjectReference Include="..\CleanArch.Application.Contract\CleanArch.Application.Contract.csproj" />
     <ProjectReference Include="..\CleanArch.Infra.Data\CleanArch.Infra.Data.csproj" />
     <ProjectReference Include="..\CleanArch.Infra.IOC\CleanArch.Infra.IOC.csproj" />
+    <ProjectReference Include="..\Framework.Core\Framework.Core.csproj" />
   </ItemGroup>
 
 </Project>
