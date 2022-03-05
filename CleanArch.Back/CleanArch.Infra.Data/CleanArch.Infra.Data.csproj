@@ -3,16 +3,17 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
+		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Mapping\" />
 		<Folder Include="Migrations\" />
 		<Folder Include="Repository\" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="AutoMapper" Version="11.0.1" />
+	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.2">
 	    <PrivateAssets>all</PrivateAssets>
@@ -26,6 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\CleanArch.Application.Contract\CleanArch.Application.Contract.csproj" />
 		<ProjectReference Include="..\CleanArch.Domain\CleanArch.Domain.csproj" />
 		<ProjectReference Include="..\Framework.Core\Framework.Core.csproj" />
 	</ItemGroup>

@@ -6,38 +6,52 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using CleanArch.Framework.Auth;
-using CleanArch.Application.Mapper;
 using Microsoft.Extensions.Options;
 using CleanArch.Framework.Auth.Permissions;
+using AutoMapper;
+using CleanArch.Domain.Model;
+using MediatR;
+using CleanArch.Application.CQRS.PersonCQRS;
+using CleanArch.Application.CQRS.RoleCQRS;
 
 namespace CleanArch.Application.Service
 {
     public class AuthenticateService : IAuthenticateService
     {
-        private IUnitOfWork _unitOfWork;
-        private AuthSettings _authSettings;
+        //private readonly IUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
+        private readonly AuthSettings _authSettings;
 
-        public AuthenticateService(IUnitOfWork unitOfWork, IOptions<AuthSettings> authSettings)
+        public AuthenticateService(//IUnitOfWork unitOfWork, 
+            IMediator mediator,
+            IOptions<AuthSettings> authSettings,
+            IMapper mapper)
         {
-            _unitOfWork=unitOfWork;
+            //_unitOfWork=unitOfWork;
+            _mediator=mediator;
             _authSettings=authSettings.Value;
+            _mapper=mapper;
         }
 
-        public PersonViewModel Authenticate(string username, string password)
+        public async Task<PersonTokenViewModel> Authenticate(AuthenticateViewModel authenticateViewModel)
         {
-            var person = _unitOfWork.PersonRepository.Get(x => x.Email == username && x.Password == password,
-                null,
-                "PersonRoles"
-                ).SingleOrDefault();
-            if (person!=null)
+
+            //var person = _unitOfWork.PersonRepository.Get(x => x.Email == loginViewModel.Email && x.Password == loginViewModel.Password,
+            //    null,
+            //    "PersonRoles"
+            //    ).SingleOrDefault();
+
+            var personViewModel = await _mediator.Send(new AuthenticatePersonQuery(authenticateViewModel));
+            if (personViewModel!=null)
             {
-                
+
                 // authentication successful so generate jwt token
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(_authSettings.Secret);
                 var claims = new ClaimsIdentity();
 
-                foreach (var permission in person.Permissions.Split(","))
+                foreach (var permission in personViewModel.Permissions.Split(","))
                 {
                     if (permission !=null)
                     {
@@ -48,12 +62,12 @@ namespace CleanArch.Application.Service
                     }
                 }
 
-                foreach (var personRole in person.PersonRoles)
+                foreach (var personRole in personViewModel.PersonRoles)
                 {
-                    var personRoles = _unitOfWork.RoleRepository.GetByID(personRole.RoleId).Permissions.Split(",");
-                    foreach (var rolePermission in personRoles)
+                    var personRoles = await _mediator.Send(new GetRoleByIdQuery(personRole.RoleId));
+                    foreach (var rolePermission in personRoles.Permissions.Split(","))
                     {
-                        if (!person.Permissions.Split(",").Any(x => x == rolePermission))
+                        if (!personViewModel.Permissions.Split(",").Any(x => x == rolePermission))
                         {
                             claims.AddClaims(new[]
                             {
@@ -71,10 +85,9 @@ namespace CleanArch.Application.Service
                             SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
-
-                var personViewModel = PersonMapper.PersonToPersonViewModel(person);
-                personViewModel.Token = tokenHandler.WriteToken(token);
-                return personViewModel;
+                var personTokenViewModel = _mapper.Map<AuthenticateViewModel, PersonTokenViewModel>(authenticateViewModel);
+                personTokenViewModel.Token = tokenHandler.WriteToken(token);
+                return personTokenViewModel;
             }
             else
                 throw new ArgumentNullException("Dont Have Permission");

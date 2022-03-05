@@ -1,5 +1,6 @@
 ﻿using CleanArch.Application.Contract.IService;
 using CleanArch.Application.Contract.ViewModels;
+using CleanArch.Domain.Model;
 using CleanArch.Framework.Auth.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,27 +23,42 @@ namespace CleanArch.Host.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public PersonViewModel Login(string Email,string Password)
+        public async Task<IActionResult> Login(AuthenticateViewModel authenticateViewModel)
         {
-            var User = _authenticateService.Authenticate(Email, Password);
-
-            return User;
+            try
+            {
+                var personTokenViewModel = await _authenticateService.Authenticate(authenticateViewModel);
+                if (personTokenViewModel!=null)
+                    return Ok(personTokenViewModel);
+                else
+                    return BadRequest();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [PermissionAuthorize(Permissions.Person.Read)]
         [HttpGet("Get")]
-        public List<PersonViewModel> Get()
+        public IActionResult Get()
         {
             var people = _personService.Read();
-            return people.ToList();
+            if (people!=null)
+                return Ok(people.ToList());
+            else
+                return BadRequest();
         }
 
         [PermissionAuthorize(Permissions.Person.Read)]
         [HttpGet("GetById{id}")]
-        public PersonViewModel Get(int id)
+        public IActionResult Get(int id)
         {
             var person = _personService.ReadById(id);
-            return person;
+            if (person!=null)
+                return Ok(person);
+            else
+                return BadRequest();
         }
 
         [PermissionAuthorize(Permissions.Person.Create)]
