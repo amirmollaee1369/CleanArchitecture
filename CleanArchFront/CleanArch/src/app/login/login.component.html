@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="col-md-5">
+        <div class="card border-dark mb-3">
+            <div class="card-header bg-dark text-light">
+                <i class="fa fa-lock"></i>
+                Login
+            </div>
+            <div class="card-body">
+                <form
+                    class="row g-3 needs-validation"
+                    (ngSubmit)="login()"
+                    [ngClass]="{'was-validated': (loginForm.errors || email.touched || password.touched)}"
+                    [formGroup]="loginForm"
+                >
+                    <div
+                        class="col-md-12"
+                        *ngIf="loginForm.errors;then invalidform"
+                    >
+
+                    </div>
+                    <div class="col-md-12 position-relative">
+                        <label
+                            for="email"
+                            class="form-label"
+                        >
+                            email
+                        </label>
+                        <input
+                            formControlName="email"
+                            type="email"
+                            class="form-control"
+                            id="email"
+                            required
+                        >
+                        <div *ngIf="email.touched && email.valid;then vlidtooltip else invlidtooltip ">Looks good!</div>
+                    </div>
+                    <div class="col-md-12 mt-4 position-relative">
+                        <label
+                            for="password"
+                            class="form-label"
+                        >
+                            password
+                        </label>
+                        <input
+                            formControlName="password"
+                            type="password"
+                            class="form-control"
+                            id="password"
+                            required
+                        >
+                        <div *ngIf="password.touched && password.valid;then vlidtooltip else invlidtooltip "></div>
+                    </div>
+                    <div class="col-12 mt-5">
+                        <button
+                            *ngIf="!isLoading;else loadingBtnSpinner"
+                            class="btn btn-primary"
+                            type="submit"
+                        >
+                            Submit form
+                        </button>                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card border-dark mb-3">
+            <div class="card-body">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #vlidtooltip>
+    <div class="valid-tooltip">Looks good!</div>
+</ng-template>
+<ng-template #invlidtooltip>
+    <div class="invalid-tooltip">Please select a valid state.</div>
+</ng-template>
+<ng-template #invalidform>
+    <div
+        class="alert alert-danger"
+        role="alert"
+    >
+        Invalid email or password!!
+    </div>
+</ng-template>
+<ng-template #loadingBtnSpinner>
+    <button class="btn btn-primary" type="button" disabled>
+        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+        Loading...
+    </button>
+</ng-template>

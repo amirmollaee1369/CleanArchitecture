@@ -46,10 +46,10 @@ using (var scope = app.Services.CreateScope())
     SeedData.Initialize(services);
 }
 
-//app.UseCors(x => x
-//    .AllowAnyOrigin()
-//    .AllowAnyMethod()
-//    .AllowAnyHeader());
+app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 
 app.UseHttpsRedirection();

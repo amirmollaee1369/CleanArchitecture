@@ -77,6 +77,13 @@ namespace CleanArch.Application.Service
                     }
                 }
 
+                claims.AddClaims(new[]
+                {
+                    new Claim("Email",personViewModel.Email),
+                    new Claim("FirstName",personViewModel.FirstName),
+                    new Claim("LastName",personViewModel.LastName)
+                });
+
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = claims,
