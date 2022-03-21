@@ -54,6 +54,46 @@ namespace CleanArch.Infra.Data.SeedData
                             Password="123",
                             RegDate=DateTime.Now,
                             Permissions=String.Join(",", new string[] { Permissions.Person.Read })
+                        }, new Person()
+                        {
+                            //Id=1,
+                            FirstName = "Ali",
+                            LastName = "Yosefi",
+                            Email = "Ali.Yosefi@gmail.com",
+                            PhoneNumber = "09152222222",
+                            Password = "123",
+                            RegDate = DateTime.Now,
+                            Permissions = String.Join(",", new string[] { Permissions.Person.Read })
+                        }, new Person()
+                        {
+                            //Id=1,
+                            FirstName = "Mahdi",
+                            LastName = "Hamedi",
+                            Email = "Mahdi.Hamdei@gmail.com",
+                            PhoneNumber = "09153333333",
+                            Password = "123",
+                            RegDate = DateTime.Now,
+                            Permissions = String.Join(",", new string[] { Permissions.Person.Read })
+                        }, new Person()
+                        {
+                            //Id=1,
+                            FirstName = "Ali",
+                            LastName = "Soleymani",
+                            Email = "Ali.Soleymani@gmail.com",
+                            PhoneNumber = "09154444444",
+                            Password = "123",
+                            RegDate = DateTime.Now,
+                            Permissions = String.Join(",", new string[] { Permissions.Person.Read })
+                        }, new Person()
+                        {
+                            //Id=1,
+                            FirstName = "Hadi",
+                            LastName = "ghasemi",
+                            Email = "Hadi.Ghasemi@gmail.com",
+                            PhoneNumber = "09155555555",
+                            Password = "123",
+                            RegDate = DateTime.Now,
+                            Permissions = String.Join(",", new string[] { Permissions.Person.Read })
                         });
                         context.SaveChanges();
                     }

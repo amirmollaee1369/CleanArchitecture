@@ -1,0 +1,68 @@
+<app-custom-accordion [accordionId]="_accordionId" [theme]="_theme">
+    <ng-container class="heading">
+        List of {{_title}}
+    </ng-container>
+    <ng-container class="body">
+        <div class="table-responsive" @customFade *ngIf="gridConfig.dataSource.length>0">
+            <table [ngClass]="{
+                'table-hover':_hover,
+                'table-striped':_striped,
+                'table-dark':_theme===themeMode.dark,
+                'table-light':_theme===themeMode.light
+            }" class="table caption-top" @customGridAnimationTransform>
+                <div *ngIf="_title;then tableCaption"></div>
+                <thead>
+                    <tr>
+                        <th *ngFor="let column of gridCompConfig.columns;index as index">
+                            <app-custom-column-header (sortClick)="_gridService.sort($event)" [column]="column"
+                                [theme]="_theme">
+                            </app-custom-column-header>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr @customGridAnimationFadeIn *ngFor="let row of gridCompConfig.dataSource">
+                        <td *ngFor="let column of _columns">{{row[column]}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td [attr.colspan]="_columns.length">
+                            <app-custom-column-pagination [prevPageEnable]="gridCompConfig.prevPageEnable"
+                                [currentPage]="gridCompConfig.currentPage" [pageSize]="_pageSize"
+                                [pagesNumber]="gridCompConfig.pagesNumber"
+                                [nextPageEnable]="gridCompConfig.nextPageEnable"
+                                (changePageSize)="_gridService.changePageSize($event)"
+                                (nextPage)="_gridService.nextPage()" (prevPage)="_gridService.prevPage()"
+                                (selectPage)="_gridService.selectPage($event)">
+                            </app-custom-column-pagination>
+                        </td>
+                    </tr>
+
+                </tfoot>
+            </table>
+        </div>
+        <div *ngIf="gridCompConfig.showLoader;then emptyDataSource"></div>
+
+    </ng-container>
+</app-custom-accordion>
+
+
+
+<ng-template #emptyDataSource>
+    <div class="alert alert-warning" role="alert" @customFade>
+        <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        Loading...
+    </div>
+</ng-template>
+
+<ng-template #tableCaption>
+    <caption [ngClass]="{
+        'text-dark':_theme===themeMode.light,
+        'text-light':_theme===themeMode.dark,
+        'bg-light':_theme===themeMode.light,
+        'bg-dark':_theme===themeMode.dark
+    }">List of {{_title}}</caption>
+</ng-template>

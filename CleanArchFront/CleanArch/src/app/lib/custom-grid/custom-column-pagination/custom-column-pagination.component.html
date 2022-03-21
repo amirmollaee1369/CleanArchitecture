@@ -1,0 +1,38 @@
+<nav aria-label="...">
+    <ul class="pagination">
+        <li [attr.role]="prevPageEnable===true ? 'button' : ''"
+            class="page-item"
+            [ngClass]="{'disabled':prevPageEnable===false}"
+            (click)="onPrevPage()">
+            <span class="page-link">Previous</span>
+        </li>
+        <li role="button" class="page-item"
+            [ngClass]="{'active':page===currentPage}"
+            *ngFor="let page of pagesNumber">
+            <a class="page-link" (click)="onSelectPage(page)">
+                {{page}}
+            </a>
+        </li>
+        <li [attr.role]="nextPageEnable===true ? 'button' : ''"
+            class="page-item"
+            [ngClass]="{'disabled':nextPageEnable===false}"
+            (click)="onNextPage()">
+            <span class="page-link">Next</span>
+        </li>
+    </ul>
+    <ul class="pagination justify-content-end">
+        <li role="button" class="page-item">
+            <a class="page-link"
+                (click)="onChangePageSize(pageSize)">{{pageSize}}</a>
+        </li>
+        <li role="button" class="page-item">
+            <a class="page-link" (click)="onChangePageSize(10)">10</a>
+        </li>
+        <li role="button" class="page-item">
+            <a class="page-link" (click)="onChangePageSize(50)">50</a>
+        </li>
+        <li role="button" class="page-item">
+            <a class="page-link" (click)="onChangePageSize(100)">100</a>
+        </li>
+    </ul>
+</nav>

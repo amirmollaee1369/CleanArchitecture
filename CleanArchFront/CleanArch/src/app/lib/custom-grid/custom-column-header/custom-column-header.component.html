@@ -1,0 +1,10 @@
+<button role="button" class="btn" (click)="onClick(column)" [ngClass]="{
+    'btn-light':(column.sort===true && _theme===themeMode.dark) || (column.sort===false && _theme===themeMode.light),
+    'btn-dark':(column.sort===false && _theme===themeMode.dark) || (column.sort===true && _theme===themeMode.light)
+}">
+<i class="fa" [ngClass]="{
+        'fa-sort-desc':column.sortMode===sortMode.desc,
+        'fa-sort-asc':column.sortMode===sortMode.asc
+    }" aria-hidden="true"></i>
+</button>
+{{column.name}}

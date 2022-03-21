@@ -1,31 +1,13 @@
 <div>
-    <h1>People</h1>
-    <table *ngIf="dataSource.length>0 else emptyDataSource">
-        <thead>
-            <th>Id</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-        </thead>
-        <tbody>
-            <tr
-                @peopleAnimationFadeIn
-                *ngFor="let person of dataSource"
-            >
-                <td>{{person.Id}}</td>
-                <td>{{person.FirstName}}</td>
-                <td>{{person.LastName}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <app-custom-grid
+        [dataSource]="dataSource"
+        [title]="'People'"
+        [striped]="true"
+        [columns]="['Id','FirstName','LastName']"
+        [theme]="themeMode.dark"
+        [hover]="true"
+        [paginationEnable]="true"
+        [pageSize]="3"
+        [accordionId]="'peopleList'"
+    ></app-custom-grid>
 </div>
-
-<ng-template #emptyDataSource>
-    <div
-        class="alert alert-warning"
-        role="alert"
-    >
-    <div class="spinner-border spinner-border-sm" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div> Loading...
-    </div>
-</ng-template>

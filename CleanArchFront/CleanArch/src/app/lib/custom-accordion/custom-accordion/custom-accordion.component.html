@@ -1,0 +1,22 @@
+<div class="accordion" id="{{_accordionId}}">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="{{_accordionId}}heading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#'+_accordionId+'collapse'" aria-expanded="true"
+                [attr.aria-controls]="_accordionId+'collapse'">
+                <ng-content select=".heading"></ng-content>
+            </button>
+        </h2>
+        <div id="{{_accordionId}}collapse" class="accordion-collapse collapse show"
+            [attr.aria-labelledby]="_accordionId+'heading'" [attr.data-bs-parent]="'#'+_accordionId">
+            <div class="accordion-body" [ngClass]="{
+                'text-dark':_theme===themeMode.light,
+                'text-light':_theme===themeMode.dark,
+                'bg-light':_theme===themeMode.light,
+                'bg-dark':_theme===themeMode.dark
+            }">
+            <ng-content select=".body"></ng-content>
+            </div>
+        </div>
+    </div>
+</div>
