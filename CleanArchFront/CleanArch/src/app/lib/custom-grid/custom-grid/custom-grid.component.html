@@ -3,7 +3,7 @@
         List of {{_title}}
     </ng-container>
     <ng-container class="body">
-        <div class="table-responsive" @customFade *ngIf="gridConfig.dataSource.length>0">
+        <div class="table-responsive" @customFade >
             <table [ngClass]="{
                 'table-hover':_hover,
                 'table-striped':_striped,
@@ -15,7 +15,7 @@
                     <tr>
                         <th *ngFor="let column of gridCompConfig.columns;index as index">
                             <app-custom-column-header (sortClick)="_gridService.sort($event)" [column]="column"
-                                [theme]="_theme">
+                                [theme]="_theme" (filterChange)="_gridService.filterChange($event)">
                             </app-custom-column-header>
                         </th>
                     </tr>
@@ -46,8 +46,6 @@
 
     </ng-container>
 </app-custom-accordion>
-
-
 
 <ng-template #emptyDataSource>
     <div class="alert alert-warning" role="alert" @customFade>

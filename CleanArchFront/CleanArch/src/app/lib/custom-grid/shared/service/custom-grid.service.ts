@@ -3,6 +3,7 @@ import { SortMode, SourceType } from '../custom-grid.enum';
 import { ColumnModel } from '../model/custom-grid-column.model';
 import { GridComputedConfigModel } from '../model/custom-grid-computed-config.model';
 import { GridConfigModel } from '../model/custom-grid-config.model';
+import { FilterModel } from '../model/custom-grid-filter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -111,9 +112,19 @@ export class CustomGridService {
     this.initGrid();
   }
 
-  initColumnsComputed(){
+  initColumnsComputed() {
     this.gridComputedConfig.columns = this.gridConfig.columns.map((col: string) => {
       return new ColumnModel(col, false, SortMode.desc);
     });
   }
+
+  filterChange(filterModel: FilterModel) {
+    this.gridComputedConfig.dataSource=this.gridConfig.dataSource.filter(
+      (item:any)=> {
+        if(filterModel.columnModel.name){
+          return item[filterModel.columnModel.name].includes(filterModel.filterValue);
+        }
+      });
+  }
+
 }
