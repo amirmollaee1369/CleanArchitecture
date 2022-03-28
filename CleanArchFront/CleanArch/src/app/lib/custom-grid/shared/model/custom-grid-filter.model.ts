@@ -1,10 +1,12 @@
-import { ColumnModel } from "./custom-grid-column.model";
+import { FilterLogic } from "../custom-grid.enum";
 
-export class FilterModel{
+export class GridFilter{
     constructor(
-        public columnModel:ColumnModel=new ColumnModel(),
-        public filterValue?:string
-    ){
-
+        public Operator?:string,
+        public Field?:string,
+        public Value?:string,
+        public Logic:FilterLogic=FilterLogic.and,
+        public Filters:Array<GridFilter>=new Array<GridFilter>()
+    ) {
     }
 }

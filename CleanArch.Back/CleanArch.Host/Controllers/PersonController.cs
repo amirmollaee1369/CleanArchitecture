@@ -1,7 +1,7 @@
 ﻿using CleanArch.Application.Contract.IService;
 using CleanArch.Application.Contract.ViewModels;
-using CleanArch.Domain.Model;
 using CleanArch.Framework.Auth.Permissions;
+using Framework.Core.Filtering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +46,17 @@ namespace CleanArch.Host.Controllers
             var people = _personService.Read();
             if (people!=null)
                 return Ok(people.ToList());
+            else
+                return BadRequest();
+        }
+
+        [PermissionAuthorize(Permissions.Person.Read)]
+        [HttpPost("GetByPage")]
+        public IActionResult Get(GridRequest gridRequest)
+        {
+            var people = _personService.Read(gridRequest);
+            if (people != null)
+                return Ok(people);
             else
                 return BadRequest();
         }

@@ -1,13 +1,32 @@
 <div>
     <app-custom-grid
+        [sourceType]="sourceType.url"
         [dataSource]="dataSource"
-        [title]="'People'"
+        [dataSourceUrl]="dataSourceUrl"
+        [token]="token"
+        [title]="'Server Side People List'"
         [striped]="true"
         [columns]="['Id','FirstName','LastName']"
         [theme]="themeMode.dark"
         [hover]="true"
         [paginationEnable]="true"
-        [pageSize]="3"
-        [accordionId]="'peopleList'"
+        [pageSize]="4"
+        [accordionId]="'serverPeopleList'"
+    ></app-custom-grid>
+</div>
+<div>
+    <app-custom-grid
+        [sourceType]="sourceType.observable"
+        [dataSource]="dataSource"
+        [dataSourceUrl]="dataSourceUrl"
+        [token]="token"
+        [title]="'Client Side People List'"
+        [striped]="true"
+        [columns]="['Id','FirstName','LastName']"
+        [theme]="themeMode.dark"
+        [hover]="true"
+        [paginationEnable]="true"
+        [pageSize]="4"
+        [accordionId]="'clientPeopleList'"
     ></app-custom-grid>
 </div>

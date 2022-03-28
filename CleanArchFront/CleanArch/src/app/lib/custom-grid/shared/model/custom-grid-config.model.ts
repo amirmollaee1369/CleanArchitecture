@@ -1,19 +1,25 @@
+import { Observable } from "rxjs";
 import { ThemeMode } from "src/app/lib/shared/global.enum";
-import { SortMode } from "../custom-grid.enum";
-import { ColumnModel } from "./custom-grid-column.model";
-
+import { SourceType } from "../custom-grid.enum";
+import { FilterResponse } from "./custom-grid-filter-response.model";
+import { PaginationConfig } from "./custom-grid-pagination-config.model";
+import { GridRequest } from "./custom-grid-request.model";
 export class GridConfigModel{
 
     constructor(
+      public sourceType: SourceType=SourceType.observable,
       public columns:Array<string>=new Array<string>(),
-      public dataSource: any=[],
+      public dataSource: Array<Object> = new Array(),
+      public dataSourceUrl:string='',
+      public token:string='',
       public title: string='List',
       public striped: boolean=false,
       public theme: ThemeMode=ThemeMode.dark,
       public hover: boolean=true,
-      public paginationEnable: boolean=true,
-      public pageSize: number=5,
-     
+      public paginationConfig:PaginationConfig=new PaginationConfig(),
+      public gridRequest:GridRequest=new GridRequest(),
+      public filterResponse:FilterResponse=new FilterResponse(),
+
     ) {
         
     }

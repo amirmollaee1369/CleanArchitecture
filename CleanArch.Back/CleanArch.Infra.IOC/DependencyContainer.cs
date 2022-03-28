@@ -4,8 +4,9 @@ using CleanArch.Application.CQRS.RoleCQRS;
 using CleanArch.Application.Service;
 using CleanArch.Domain.Model;
 using CleanArch.Framework.Auth.Permissions;
+using CleanArch.Framework.Core.GenericRepository;
 using CleanArch.Framework.Core.IGenericRepository;
-using CleanArch.Infra.Data.Repository;
+using CleanArch.Infra.Data.Context;
 using CleanArch.Infra.Data.UnitOfWork;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +18,7 @@ namespace CleanArch.Infra.IOC
     {
         public static void RegisterDependency(IServiceCollection service)
         {
-            service.AddScoped<IGenericRepository<Person>, GenericRepository<Person>>();
+            service.AddScoped<IGenericRepository<Person>, GenericRepository<CleanArchDBContext,Person>>();
             service.AddScoped<IUnitOfWork, UnitOfWork>();
 
             #region Services

@@ -1,20 +1,36 @@
-﻿
-using CleanArch.Framework.Core.IGenericRepository;
-using CleanArch.Infra.Data.Context;
+﻿using CleanArch.Framework.Core.IGenericRepository;
+using Framework.Core.Filtering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace CleanArch.Infra.Data.Repository
+namespace CleanArch.Framework.Core.GenericRepository
 {
-    public class GenericRepository<TEntity>: IGenericRepository<TEntity> where TEntity : class
+    public class GenericRepository<TContext, TEntity> : IGenericRepository<TEntity> where TEntity : class where TContext : DbContext
     {
-        internal CleanArchDBContext context;
+        internal TContext context;
         internal DbSet<TEntity> dbSet;
 
-        public GenericRepository(CleanArchDBContext context)
+        public GenericRepository(TContext context)
         {
             this.context = context;
             this.dbSet = context.Set<TEntity>();
+        }
+
+        public FilterResponse<TEntity> GetFiltered(Expression<Func<TEntity, bool>> predicate, GridRequest request, string[] Includes)
+        {
+            var query = context.Set<TEntity>().AsQueryable();
+
+            if (Includes != null)
+                foreach (string include in Includes)
+                {
+                    query = query.Include(include); //got to reaffect it.
+                }
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return query.ApplyFilters(request);
         }
 
         public virtual IEnumerable<TEntity> Get(

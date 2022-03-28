@@ -6,6 +6,7 @@ import { NotFoundError } from 'src/app/shared/errors/not-found-error';
 import { BadInputError } from 'src/app/shared/errors/bad-input-error';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenStorageService } from './token-storage.service';
+import { GridRequest } from '../../lib/custom-grid/shared/model/custom-grid-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,13 @@ export class DataService {
 
   getAll() {
     return this._httpClient.get(`${this._url}/Get`, this.createHeaders()).pipe(
+      map(this.handleMapError),
+      catchError(this.handleError)
+    );
+  }
+
+  getByPage(gridRequest:GridRequest) {
+    return this._httpClient.post(`${this._url}/GetByPage`, gridRequest , this.createHeaders()).pipe(
       map(this.handleMapError),
       catchError(this.handleError)
     );

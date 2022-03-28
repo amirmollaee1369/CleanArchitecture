@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Framework.Core.Filtering;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArch.Framework.Core.IGenericRepository
 {
@@ -13,6 +9,8 @@ namespace CleanArch.Framework.Core.IGenericRepository
            Expression<Func<TEntity, bool>> filter = null,
            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
            string includeProperties = "");
+
+        FilterResponse<TEntity> GetFiltered(Expression<Func<TEntity, bool>> predicate, GridRequest request, params string[] Includes);
 
         public TEntity GetByID(object id);
 

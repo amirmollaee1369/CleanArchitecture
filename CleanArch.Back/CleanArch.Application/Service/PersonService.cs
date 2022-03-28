@@ -3,7 +3,7 @@ using CleanArch.Application.Contract.IService;
 using CleanArch.Application.Contract.ViewModels;
 using CleanArch.Domain.Model;
 using CleanArch.Infra.Data.UnitOfWork;
-using System.Linq.Expressions;
+using Framework.Core.Filtering;
 
 namespace CleanArch.Application.Service
 {
@@ -31,6 +31,13 @@ namespace CleanArch.Application.Service
         public IEnumerable<PersonViewModel> Read()
         {
             return _unitOfWork.PersonRepository.Get().Select(person => _mapper.Map<Person, PersonViewModel>(person)).ToList();
+        }
+
+        public FilterResponse<PersonViewModel> Read(GridRequest gridRequest)
+        {
+            var result= _unitOfWork.PersonRepository.GetFiltered(null,gridRequest,null);
+            return new FilterResponse<PersonViewModel>(result.data.Select(person => _mapper.Map<Person, PersonViewModel>(person)).ToList<PersonViewModel>() ,
+                result.total,result.MinItem);
         }
 
         public PersonViewModel ReadById(int id)

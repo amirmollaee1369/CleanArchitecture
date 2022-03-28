@@ -3,22 +3,22 @@
         'list-group-item-light':_theme===themeMode.light,
         'list-group-item-dark':_theme===themeMode.dark
     }">
-        <button role="button" class="btn" (click)="onClick(column)" [ngClass]="{
-    'btn-light':(column.sort===true && _theme===themeMode.dark) || (column.sort===false && _theme===themeMode.light),
-    'btn-dark':(column.sort===false && _theme===themeMode.dark) || (column.sort===true && _theme===themeMode.light)
+        <button role="button" class="btn" (click)="onClick()" [ngClass]="{
+    'btn-light': _theme===themeMode.dark,
+    'btn-dark':_theme===themeMode.dark
 }">
             <i class="fa" [ngClass]="{
-        'fa-sort-desc':column.sortMode===sortMode.desc,
-        'fa-sort-asc':column.sortMode===sortMode.asc
+        'fa-sort-desc':gridSort?.Dir===sortMode.desc,
+        'fa-sort-asc':gridSort?.Dir===sortMode.asc
     }" aria-hidden="true"></i>
         </button>
-        {{column.name}}
+        {{column}}
     </li>
     <li class="list-group-item">
         <div class="input-group mb-3">
-            <span class="input-group-text fa fa-filter" [id]="'H'+column.name" aria-hidden="true"></span>
-            <input type="text" class="form-control" (change)="onFilterChange($event)" [attr.placeholder]="column.name" [attr.aria-label]="column.name"
-                [attr.aria-describedby]="'H'+column.name">
+            <span class="input-group-text fa fa-filter" [id]="'H'+column" aria-hidden="true"></span>
+            <input type="search" class="form-control" (input)="onFilterChange($event)" [attr.placeholder]="column" [attr.aria-label]="column"
+                [attr.aria-describedby]="'H'+column">
         </div>
     </li>
 </ul>

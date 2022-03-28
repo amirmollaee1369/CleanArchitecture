@@ -1,130 +1,242 @@
 import { Injectable } from '@angular/core';
 import { SortMode, SourceType } from '../custom-grid.enum';
-import { ColumnModel } from '../model/custom-grid-column.model';
-import { GridComputedConfigModel } from '../model/custom-grid-computed-config.model';
 import { GridConfigModel } from '../model/custom-grid-config.model';
-import { FilterModel } from '../model/custom-grid-filter.model';
+import { FilterResponse } from '../model/custom-grid-filter-response.model';
+import { GridFilter } from '../model/custom-grid-filter.model';
+import { GridSort } from '../model/custom-grid-sort.model';
+import { CustomGridDataService } from './custom-grid-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomGridService {
-  gridComputedConfig: GridComputedConfigModel;
+  dataSourceComp: any;
+  originGridConfig: GridConfigModel;
   gridConfig: GridConfigModel;
-  constructor() {
+  showLoader: boolean = true;
+  constructor(
+    private _customGridDataService: CustomGridDataService
+  ) {
+    this.originGridConfig = new GridConfigModel();
     this.gridConfig = new GridConfigModel();
-    this.gridComputedConfig = new GridComputedConfigModel();
   }
 
-  setGridConfigModel(_gridConfigModel: GridConfigModel) {
-    this.gridConfig = _gridConfigModel;
+  //Init Grid
+  initGrid(_gridConfig: GridConfigModel) {
+    //Set Grid Config
+    this.originGridConfig = _gridConfig;
+    this.gridConfig = _gridConfig;
+    //===============
+    this.laodDataSource();
+  }
+  //==============
+
+  //Load DataSource
+  laodDataSource() {
+    switch (this.gridConfig.sourceType) {
+      case SourceType.observable:
+        this.dataSourceComp = this.gridConfig.dataSource;
+        this.refreshGrid();
+        break;
+      case SourceType.url:
+        this.getDataSourceFromUrl();
+        break;
+    }
+  }
+  getDataSourceFromUrl() {
+    this._customGridDataService.getByPage(
+      this.gridConfig.dataSourceUrl,
+      this.gridConfig.gridRequest,
+      this.gridConfig.token
+    ).subscribe((result: FilterResponse) => {
+      this.gridConfig.filterResponse = result;
+      this.dataSourceComp = result.data;
+      this.showLoader = false;
+      this.pagingDataSource();
+    });
+  }
+  //===============
+
+  //Compute Grid DataSource
+  refreshGrid() {
+    this.showLoader = true;
+    switch (this.gridConfig.sourceType) {
+      case SourceType.observable:
+        this.dataSourceComp = this.gridConfig.dataSource;
+        if (this.sortConfig.length > 0)
+          this.sortDataSource();
+        if (this.filterConfig && this.filterConfig.length > 0)
+          this.filterDataSource();
+        if (this.paginationConfig.paginationEnable)
+          this.pagingDataSource();
+        this.computeDataSource();
+        this.showLoader = false;
+        break;
+      case SourceType.url:
+        this.getDataSourceFromUrl();
+        break;
+    }
   }
 
-  initGrid() {
-    if (this.gridConfig.paginationEnable)
-      this.generatePaging();
-    else
-      this.gridComputedConfig.dataSource = this.gridConfig.dataSource;
-    this.gridComputedConfig.showLoader = false;
-  }
 
-  generatePaging() {
-    if (this.gridConfig.dataSource.length > this.gridConfig.pageSize) {
-      this.gridComputedConfig.pagesNumber = [...Array(this.gridConfig.dataSource.length / this.gridConfig.pageSize).keys()].map(i => i + 1);
+  //===============
+
+  //Header Tools
+  //Pagination
+  pagingDataSource() {
+    let pageSize: number = this.gridConfig.paginationConfig.pageSize;
+    let dataSourceLength: number = 0;
+    switch (this.gridConfig.sourceType) {
+      case SourceType.observable:
+        dataSourceLength = this.gridConfig.dataSource.length;
+        break;
+      case SourceType.url:
+        dataSourceLength = this.gridConfig.filterResponse.total || 0;
+        break;
+    }
+    if (dataSourceLength > pageSize) {
+      this.paginationConfig.pagesNumber = [...Array(Math.ceil(dataSourceLength / pageSize)).keys()].map(i => i + 1);
     }
     else {
-      this.gridComputedConfig.pagesNumber = [1];
-      this.gridComputedConfig.currentPage = 1;
+      this.paginationConfig.pagesNumber = [1];
+      this.paginationConfig.currentPage = 1;
     }
-    this.changePage();
+    this.computeNextPrevEn();
   }
 
-  changePage() {
-    this.gridComputedConfig.dataSource = (this.gridConfig.dataSource as Array<object>).slice((this.gridComputedConfig.currentPage - 1) * this.gridConfig.pageSize, this.gridComputedConfig.currentPage * this.gridConfig.pageSize);
-    if (this.gridComputedConfig.currentPage == 1)
-      this.gridComputedConfig.prevPageEnable = false;
-    else
-      this.gridComputedConfig.prevPageEnable = true;
-    if (this.gridComputedConfig.currentPage < this.gridComputedConfig.pagesNumber[this.gridComputedConfig.pagesNumber.length - 1])
-      this.gridComputedConfig.nextPageEnable = true;
-    else
-      this.gridComputedConfig.nextPageEnable = false;
+  computeDataSource() {
+    this.dataSourceComp = (this.gridConfig.dataSource as Array<object>).slice((this.paginationConfig.currentPage - 1) * this.paginationConfig.pageSize, this.paginationConfig.currentPage * this.paginationConfig.pageSize);
   }
 
-  getDataSourceType(_dataSource: any) {
-    if (Array.isArray(_dataSource))
-      return SourceType.array;
-    return SourceType.unknown;
+  changePageSize(pageSize: number) {
+    this.paginationConfig.pageSize = pageSize;
+    this.paginationConfig.currentPage = 1;
+    if (this.gridConfig.sourceType == SourceType.url)
+      this.computeGridRequest();
+    this.refreshGrid();
   }
 
-  selectPage(page: number) {
-    this.gridComputedConfig.currentPage = page;
-    this.changePage();
+  computeGridRequest() {
+    this.gridRequest.Skip = (this.paginationConfig.currentPage - 1) * this.gridConfig.gridRequest.Take;
+    this.gridRequest.Take = this.paginationConfig.pageSize * this.paginationConfig.currentPage;
+    let total = this.filterResponse.total || 0;
+    if (this.gridRequest.Take > total && total > 0)
+      this.gridRequest.Take = total;
+  }
+
+  get gridRequest() {
+    return this.gridConfig.gridRequest;
+  }
+
+  get filterResponse() {
+    return this.gridConfig.filterResponse;
   }
 
   nextPage() {
-    if (this.gridComputedConfig.nextPageEnable) {
-      this.gridComputedConfig.currentPage = this.gridComputedConfig.currentPage + 1;
-      this.changePage();
-      this.gridComputedConfig.prevPageEnable = true;
-      if (this.gridComputedConfig.currentPage < this.gridComputedConfig.pagesNumber[this.gridComputedConfig.pagesNumber.length - 1]) {
-        this.gridComputedConfig.nextPageEnable = true;
-      }
-      else
-        this.gridComputedConfig.nextPageEnable = false;
+    let lastPage = this.paginationConfig.pagesNumber[this.paginationConfig.pagesNumber.length - 1];
+    if (this.paginationConfig.currentPage < lastPage) {
+      this.paginationConfig.currentPage++;
+      if (this.gridConfig.sourceType == SourceType.url)
+        this.computeGridRequest();
+      this.refreshGrid();
     }
   }
 
   prevPage() {
-    if (this.gridComputedConfig.prevPageEnable) {
-      this.gridComputedConfig.currentPage = this.gridComputedConfig.currentPage - 1;
-      this.changePage();
-      this.gridComputedConfig.nextPageEnable = true;
-      if (this.gridComputedConfig.currentPage === 1) {
-        this.gridComputedConfig.prevPageEnable = false;
-      }
-      else
-        this.gridComputedConfig.prevPageEnable = true;
+    if (this.paginationConfig.currentPage > 1) {
+      this.paginationConfig.currentPage--;
+      if (this.gridConfig.sourceType == SourceType.url)
+        this.computeGridRequest();
+      this.refreshGrid();
     }
   }
 
-  sort(column: ColumnModel) {
-    for (let i = 0; i < this.gridConfig.columns.length; i++) {
-      this.gridComputedConfig.columns[i].sort = false;
-    }
-    column.sort = true;
-    this.gridConfig.dataSource.sort((a: any, b: any) => {
-      if (column.name) {
-        if (column.sortMode === SortMode.desc)
-          return (a[column.name] < b[column.name]) ? 1 : ((b[column.name] < a[column.name]) ? -1 : 0)
-        else
-          return (a[column.name] > b[column.name]) ? 1 : ((b[column.name] > a[column.name]) ? -1 : 0)
+  selectPage(currentPage: number) {
+    this.paginationConfig.currentPage = currentPage;
+    if (this.gridConfig.sourceType == SourceType.url)
+      this.computeGridRequest();
+    this.refreshGrid();
+  }
+
+  get paginationConfig() {
+    return this.gridConfig.paginationConfig;
+  }
+  //===================
+  //Filtering
+  filterDataSource() {
+    this.filterConfig?.forEach(filter => {
+      this.dataSourceComp = (this.gridConfig.dataSource as Array<Object>).filter((f: any) => {
+        if (filter?.Field)
+          return f[filter.Field].toLowerCase().includes((filter?.Value as string).toLowerCase());
       }
+      );
+    });
+  }
+
+  addFilter(_filter: GridFilter) {
+    let filterIndex = this.filterConfig?.findIndex(f => f.Field === _filter.Field);
+    if (_filter?.Value) {
+      if (filterIndex < 0)
+        this.filterConfig?.push(_filter);
       else
-        return undefined;
-    });
-    column.sortMode = column.sortMode === SortMode.asc ? SortMode.desc : SortMode.asc;
-    this.initGrid();
+        this.filterConfig[filterIndex] = _filter;
+    } else {
+      this.filterConfig?.splice(filterIndex, 1);
+    } debugger
+    this.refreshGrid()
   }
 
-  changePageSize(_pageSize: number) {
-    this.gridConfig.pageSize = _pageSize; debugger
-    this.initGrid();
+  getColumnFilter(column: string) {
+    return this.filterConfig?.find(filter => filter.Field === column);
   }
 
-  initColumnsComputed() {
-    this.gridComputedConfig.columns = this.gridConfig.columns.map((col: string) => {
-      return new ColumnModel(col, false, SortMode.desc);
-    });
+  get filterConfig() {
+    return this.gridConfig.gridRequest.FilterX?.Filters;
   }
 
-  filterChange(filterModel: FilterModel) {
-    this.gridComputedConfig.dataSource=this.gridConfig.dataSource.filter(
-      (item:any)=> {
-        if(filterModel.columnModel.name){
-          return item[filterModel.columnModel.name].includes(filterModel.filterValue);
+  computeNextPrevEn() {
+    let currentPage = this.paginationConfig.currentPage;
+    let pages = this.paginationConfig.pagesNumber;
+    let lastPage = pages[pages.length - 1];
+    this.paginationConfig.prevPageEnable = currentPage > 1 ? true : false;
+    this.paginationConfig.nextPageEnable = currentPage < lastPage ? true : false;
+  }
+
+  //================
+  //Sorting
+  sortDataSource() {
+    this.sortConfig.forEach((sort: GridSort) => {
+      this.dataSourceComp = this.gridConfig.dataSource.sort((a: any, b: any) => {
+        if (sort.Field) {
+          if (sort.Dir === SortMode.desc)
+            return (a[sort.Field] < b[sort.Field]) ? 1 : ((b[sort.Field] < a[sort.Field]) ? -1 : 0)
+          else
+            return (a[sort.Field] > b[sort.Field]) ? 1 : ((b[sort.Field] > a[sort.Field]) ? -1 : 0)
         }
+        else
+          return 0;
       });
+    });
   }
 
+  addSort(_sort: GridSort) {
+    let sorts = this.sortConfig;
+    let sort = sorts?.find(s => s.Field === _sort.Field);
+    if (!sort)
+      sorts?.push(_sort);
+    else
+      sorts.push(...sorts.splice(sorts.findIndex(s => _sort), 1))
+
+    this.refreshGrid();
+  }
+
+  getColumnSort(column: string) {
+    return this.sortConfig?.find(sort => sort.Field === column);
+  }
+
+  get sortConfig() {
+    return this.gridConfig.gridRequest.Sort;
+  }
+  //===============
+  //===============
 }

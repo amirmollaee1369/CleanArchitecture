@@ -1,7 +1,7 @@
 ﻿using CleanArch.Domain.Model;
+using CleanArch.Framework.Core.GenericRepository;
 using CleanArch.Framework.Core.IGenericRepository;
 using CleanArch.Infra.Data.Context;
-using CleanArch.Infra.Data.Repository;
 
 namespace CleanArch.Infra.Data.UnitOfWork
 {
@@ -24,7 +24,7 @@ namespace CleanArch.Infra.Data.UnitOfWork
             {
                 if (this.personRepository == null)
                 {
-                    this.personRepository = new GenericRepository<Person>(_context);
+                    this.personRepository = new GenericRepository<CleanArchDBContext,Person>(_context);
                 }
                 return personRepository;
             }
@@ -39,7 +39,7 @@ namespace CleanArch.Infra.Data.UnitOfWork
             {
                 if (this.roleRepository == null)
                 {
-                    this.roleRepository = new GenericRepository<Role>(_context);
+                    this.roleRepository = new GenericRepository<CleanArchDBContext,Role>(_context);
                 }
                 return roleRepository;
             }

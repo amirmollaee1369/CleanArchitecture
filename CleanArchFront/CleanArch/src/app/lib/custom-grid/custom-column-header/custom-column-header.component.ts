@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ThemeMode } from '../../shared/global.enum';
-import { SortMode } from '../shared/custom-grid.enum';
-import { ColumnModel } from '../shared/model/custom-grid-column.model';
-import { FilterModel } from '../shared/model/custom-grid-filter.model';
+import { FilterLogic, FilterOperator, SortMode } from '../shared/custom-grid.enum';
+import { GridFilter } from '../shared/model/custom-grid-filter.model';
+import { GridSort } from '../shared/model/custom-grid-sort.model';
 
 @Component({
   selector: 'app-custom-column-header',
@@ -10,28 +10,34 @@ import { FilterModel } from '../shared/model/custom-grid-filter.model';
   styleUrls: ['./custom-column-header.component.sass']
 })
 export class CustomColumnHeaderComponent implements OnInit {
-  @Output('sortClick') sortClick: EventEmitter<ColumnModel> = new EventEmitter();
-  @Output('filterChange') filterChange: EventEmitter<FilterModel> = new EventEmitter();
+  @Output('sortClick') sortClick: EventEmitter<GridSort> = new EventEmitter();
+  @Output('filterChange') filterChange: EventEmitter<GridFilter> = new EventEmitter();
 
   @Input('theme') _theme: ThemeMode = ThemeMode.dark;
-  @Input('column') column:ColumnModel=new ColumnModel();
-
-  themeMode=ThemeMode;
-  sortMode=SortMode;
-  constructor() { 
-    
+  @Input('column') column?: string;
+  @Input('gridSort') gridSort?: GridSort = new GridSort();
+  @Input('gridFilter') gridFilter?: GridFilter = new GridFilter();
+  themeMode = ThemeMode;
+  sortMode = SortMode;
+  constructor() {
   }
 
   ngOnInit(): void {
+    if (!this.gridSort)
+      this.gridSort = new GridSort(this.column, SortMode.desc);
   }
 
-  onClick(column:ColumnModel){
-    this.sortClick.emit(column);
+  onClick() {
+    if (this.gridSort && this.gridSort.Dir)
+      this.gridSort.Dir = this.gridSort?.Dir === SortMode.asc ? SortMode.desc : SortMode.asc;
+    else
+      this.gridSort = new GridSort(this.column, SortMode.desc);
+    this.sortClick.emit(this.gridSort);
   }
 
-  onFilterChange($event:any){
+  onFilterChange($event: any) {
     this.filterChange.emit(
-    new FilterModel(this.column,$event.currentTarget.value)
+      new GridFilter(FilterOperator.eq, this.column, $event.currentTarget.value, FilterLogic.and)
     );
   }
 }

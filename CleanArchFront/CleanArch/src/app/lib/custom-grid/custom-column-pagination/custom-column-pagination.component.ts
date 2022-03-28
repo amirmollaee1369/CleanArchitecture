@@ -9,14 +9,17 @@ export class CustomColumnPaginationComponent implements OnInit {
   @Input('prevPageEnable') prevPageEnable: boolean = false;
   @Input('currentPage') currentPage: number = 1;
   @Input('pageSize') pageSize: number = 5;
+  @Input('oldPageSize') oldPageSize: number = 5;
   @Input('pagesNumber') pagesNumber: Array<number> = [];
   @Input('nextPageEnable') nextPageEnable: boolean = true;
 
   @Output('prevPage') prevPage = new EventEmitter();
   @Output('selectPage') selectPage: EventEmitter<number> = new EventEmitter();
   @Output('nextPage') nextPage = new EventEmitter();
-  @Output('changePageSize') changePageSize:EventEmitter<number> = new EventEmitter();
-  constructor() { }
+  @Output('changePageSize') changePageSize: EventEmitter<number> = new EventEmitter();
+  constructor() {
+    this.oldPageSize = this.pageSize;
+  }
 
   ngOnInit(): void {
   }

@@ -9,6 +9,7 @@ import { CustomGridService } from './shared/service/custom-grid.service';
 import { CustomAccordionModule } from '../custom-accordion/custom-accordion.module';
 import { CustomColumnHeaderComponent } from './custom-column-header/custom-column-header.component';
 import { CustomColumnPaginationComponent } from './custom-column-pagination/custom-column-pagination.component';
+import { CustomGridDataService } from './shared/service/custom-grid-data.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { CustomColumnPaginationComponent } from './custom-column-pagination/cust
     CustomGridComponent
   ],
   providers:[
-    CustomGridService
+    CustomGridDataService
   ]
 })
 export class CustomGridModule { }

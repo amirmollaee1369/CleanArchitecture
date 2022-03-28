@@ -1,12 +1,19 @@
 export enum SourceType {
-    array,
     observable,
-    promise,
-    object,
-    unknown
+    url
 }
 
 export enum SortMode {
-    asc,
-    desc
+    asc = 'asc',
+    desc = 'desc'
+}
+
+export enum FilterOperator {
+    eq = 'eq',
+    noEq = 'noEq'
+}
+
+export enum FilterLogic {
+    and = 'and',
+    or = 'or'
 }
