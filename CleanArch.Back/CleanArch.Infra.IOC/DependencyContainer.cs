@@ -18,7 +18,7 @@ namespace CleanArch.Infra.IOC
     {
         public static void RegisterDependency(IServiceCollection service)
         {
-            service.AddScoped<IGenericRepository<Person>, GenericRepository<CleanArchDBContext,Person>>();
+            service.AddScoped<IGenericRepository<Person>, GenericRepository<CleanArchDBContext, Person>>();
             service.AddScoped<IUnitOfWork, UnitOfWork>();
 
             #region Services

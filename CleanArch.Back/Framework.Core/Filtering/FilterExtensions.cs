@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using System.Linq.Dynamic;
-using EntityFramework.Extensions;
-
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 namespace Framework.Core.Filtering
 {
     public static class FilterExtensions
@@ -31,7 +30,7 @@ namespace Framework.Core.Filtering
                 }
                 else
                 {
-                    var keyId = $@"{typeof(T).Name}Id";
+                    var keyId = $@"Id";
                     query = query.OrderBy(keyId + " desc");
                 }
             }
