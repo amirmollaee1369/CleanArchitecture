@@ -11,5 +11,6 @@ namespace CleanArch.Application.Contract.IService
         TResult ReadById(int id);
         void Update(TResult result);
         void Delete(TResult result);
+        void Delete(int id);
     }
 }

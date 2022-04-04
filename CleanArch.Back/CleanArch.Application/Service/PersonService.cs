@@ -21,11 +21,19 @@ namespace CleanArch.Application.Service
         public void Create(PersonViewModel personVM)
         {
             _unitOfWork.PersonRepository.Insert(_mapper.Map<PersonViewModel, Person>(personVM));
+            _unitOfWork.Save();
         }
 
         public void Delete(PersonViewModel personVM)
         {
             _unitOfWork.PersonRepository.Delete(_mapper.Map<PersonViewModel, Person>(personVM));
+            _unitOfWork.Save();
+        }
+
+        public void Delete(int id)
+        {
+            _unitOfWork.PersonRepository.Delete(id);
+            _unitOfWork.Save();
         }
 
         public IEnumerable<PersonViewModel> Read()
@@ -48,6 +56,7 @@ namespace CleanArch.Application.Service
         public void Update(PersonViewModel personVM)
         {
             _unitOfWork.PersonRepository.Update(_mapper.Map<PersonViewModel, Person>(personVM));
+            _unitOfWork.Save();
         }
     }
 }

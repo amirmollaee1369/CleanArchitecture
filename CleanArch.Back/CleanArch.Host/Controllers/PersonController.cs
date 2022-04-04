@@ -28,12 +28,12 @@ namespace CleanArch.Host.Controllers
             try
             {
                 var personTokenViewModel = await _authenticateService.Authenticate(authenticateViewModel);
-                if (personTokenViewModel!=null)
+                if (personTokenViewModel != null)
                     return Ok(personTokenViewModel);
                 else
                     return BadRequest();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
@@ -44,7 +44,7 @@ namespace CleanArch.Host.Controllers
         public IActionResult Get()
         {
             var people = _personService.Read();
-            if (people!=null)
+            if (people != null)
                 return Ok(people.ToList());
             else
                 return BadRequest();
@@ -62,11 +62,11 @@ namespace CleanArch.Host.Controllers
         }
 
         [PermissionAuthorize(Permissions.Person.Read)]
-        [HttpGet("GetById{id}")]
+        [HttpGet("GetById/{id}")]
         public IActionResult Get(int id)
         {
             var person = _personService.ReadById(id);
-            if (person!=null)
+            if (person != null)
                 return Ok(person);
             else
                 return BadRequest();
@@ -76,6 +76,7 @@ namespace CleanArch.Host.Controllers
         [HttpPost("Create")]
         public IActionResult CreatePerson(PersonViewModel personViewModel)
         {
+            personViewModel.Permissions = Permissions.Person.Read;
             _personService.Create(personViewModel);
             return Ok();
         }
@@ -84,6 +85,7 @@ namespace CleanArch.Host.Controllers
         [HttpPut("Update")]
         public IActionResult UpdatePerson(PersonViewModel personViewModel)
         {
+            if (personViewModel.Permissions == null) personViewModel.Permissions = Permissions.Person.Read;
             _personService.Update(personViewModel);
             return Ok();
         }
@@ -93,6 +95,14 @@ namespace CleanArch.Host.Controllers
         public IActionResult DeletePerson(PersonViewModel personViewModel)
         {
             _personService.Delete(personViewModel);
+            return Ok();
+        }
+
+        [PermissionAuthorize(Permissions.Person.Delete)]
+        [HttpDelete("DeleteById/{id}")]
+        public IActionResult DeletePerson(int id)
+        {
+            _personService.Delete(id);
             return Ok();
         }
     }

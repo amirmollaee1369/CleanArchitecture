@@ -43,7 +43,7 @@ namespace CleanArch.Infra.Data.SeedData
                             PhoneNumber="09154308951",
                             Password="123",
                             RegDate=DateTime.Now,
-                            Permissions=String.Join(",", new string[] { Permissions.Person.Read })
+                            Permissions=String.Join(",", new string[] { Permissions.Person.Read, Permissions.Person.Delete, Permissions.Person.Read, Permissions.Person.Update })
                         }, new Person()
                         {
                             //Id=1,
