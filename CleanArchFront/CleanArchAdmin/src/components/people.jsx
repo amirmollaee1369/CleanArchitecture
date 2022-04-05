@@ -61,7 +61,10 @@ class People extends Component {
     let filtered = allPeople;
     if (searchQuery)
       filtered = allPeople.filter((m) =>
-        m.FirstName.toLowerCase().startsWith(searchQuery.toLowerCase())
+        m.FirstName.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+        m.LastName.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+        m.Email.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+        m.PhoneNumber.toLowerCase().startsWith(searchQuery.toLowerCase()) 
       );
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
